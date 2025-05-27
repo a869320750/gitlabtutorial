@@ -38,6 +38,7 @@ graph LR
     D -->|CI失败| F[拒绝合并]
     E -->|批准| G[合入主分支]
 ```
+[详见CodeMergingProcess.md](./docs/CodeMergingProcess.md)<br>
 ## 四、代码检查与质量门禁篇
 目标：通过自动化工具拦截低质量代码<br>
 内容：

@@ -23,6 +23,7 @@ graph TD
 操作步骤<br>
 1、进入项目设置：
 项目 → 设置 → 仓库 → 展开“保护分支”
+
 ![](../images/createProtectBranch.png)
 
 2、配置保护规则：
@@ -31,6 +32,7 @@ graph TD
 - **允许合并**: `维护者+` (允许开发者发起 MR，但需维护者批准)
 - **允许推送并合并**: `维护者`
 - **允许强制推送**: `❌ 禁用` (防止历史被篡改)
+
 ![](../images/createProtectBranch1.png)
 
 3、通配符保护（需要批量设置前缀一致的分支的情况，和上面类似）:
@@ -60,7 +62,10 @@ graph TD
 
 新建项目时选择所属群组，自动继承组权限
 
-4、以成员管理为例具体演示：
+4、以成员管理为例具体演示：<br>
+父群组：<br>
 ![](../images/BaseGroup.png)
+子群组：<br>
 ![](../images/ChildGroup.png)
+子群组项目：<br>
 ![](../images/ChildGroupProject.png)
