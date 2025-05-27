@@ -2,7 +2,7 @@
 此项目是为了提供开发人员快速理解和使用gitlab而准备分为以下几个部分。
 
 ## 一、gitlab简介
-详见Introduction.md
+[详见Introduction.md](./docs/Introduction.md)
 ## 二、权限控制篇
 目标：明确不同角色在代码合入中的权限边界<br>
 内容：PermissionControl.md
@@ -15,7 +15,7 @@ GitLab 角色与权限对照表
 项目/组级别权限继承规则
     如何通过群组（Group）批量管理权限
 ```
-
+[详见PermissionControl.md](./docs/PermissionControl.md)<br>
 ## 三、代码合入流程篇
 目标：规范代码从提交到合入的完整流程<br>
 内容：
