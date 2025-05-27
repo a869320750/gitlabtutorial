@@ -1,93 +1,78 @@
-# GitlabTutorial
+# 简介
+此项目是为了提供开发人员快速理解和使用gitlab而准备分为以下几个部分。
 
-
-
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
+## 一、gitlab简介
+## 二、权限控制篇
+目标：明确不同角色在代码合入中的权限边界<br>
+内容：
 ```
-cd existing_repo
-git remote add origin http://192.168.1.11/jinyingjie/gitlabtutorial.git
-git branch -M main
-git push -uf origin main
+GitLab 角色与权限对照表
+开发者 vs 维护者 vs 管理员的具体权限（表格对比）
+保护分支（Protected Branches）配置
+如何设置 main/production 分支的推送/合并权限
+通配符保护（如 release/*）
+项目/组级别权限继承规则
+如何通过群组（Group）批量管理权限
 ```
 
-## Integrate with your tools
+## 三、代码合入流程篇
+目标：规范代码从提交到合入的完整流程<br>
+内容：
+```
+合并请求（Merge Request, MR）强制化
+    如何关闭直接推送（仅允许通过 MR 合入）
+MR 审核规则
+    必须至少 X 个审核人批准（企业版功能）
+    必须关联 Issue（Closes #123）
+状态检查（Status Checks）
+    要求 CI/CD 流水线成功才能合并
+    强制代码扫描通过（SonarQube 集成）
+```
+```mermaid
+graph LR
+    A[开发者创建分支] --> B[提交代码到分支]
+    B --> C[发起MR请求]
+    C --> D{自动检查}
+    D -->|CI通过| E[人工审核]
+    D -->|CI失败| F[拒绝合并]
+    E -->|批准| G[合入主分支]
+```
+## 四、代码检查与质量门禁篇
+目标：通过自动化工具拦截低质量代码
+内容：
 
-- [ ] [Set up project integrations](http://192.168.1.11/jinyingjie/gitlabtutorial/-/settings/integrations)
+GitLab CI/CD 集成检查工具
 
-## Collaborate with your team
+静态代码分析（SAST）：ESLint、RuboCop
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+依赖漏洞扫描（Dependency Scanning）
 
-## Test and Deploy
+代码覆盖率阈值（如 <80% 则失败）
 
-Use the built-in continuous integration in GitLab.
+自定义规则示例
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+## 五、紧急情况处理篇
+目标：提供权限管控的例外流程
+内容：
 
-***
+临时解除分支保护（管理员操作指南）
 
-# Editing this README
+Hotfix 流程
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+如何创建紧急修复分支（hotfix/ 前缀）
 
-## Suggestions for a good README
+事后补 MR 和审计记录
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## 六、最佳实践与常见问题
+目标：减少团队误操作
+内容：
 
-## Name
-Choose a self-explaining name for your project.
+错误案例
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+误推送主分支后的回滚方法
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+MR 冲突解决指南
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+权限矩阵模板（Excel/表格）
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+如何监控不合规操作（Audit Events）
