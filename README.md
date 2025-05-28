@@ -39,32 +39,58 @@ graph LR
     E -->|批准| G[合入主分支]
 ```
 [详见CodeMergingProcess.md](./docs/CodeMergingProcess.md)<br>
-## 四、代码检查与质量门禁篇
-目标：通过自动化工具拦截低质量代码<br>
+## 四、议题管理规范（Issue 使用）
+目标：通过议题管理项目规范、类比华为的SR需求单和DTS问题单<br>
 内容：
 ```
-GitLab CI/CD 集成检查工具
-静态代码分析（SAST）：ESLint、RuboCop
-依赖漏洞扫描（Dependency Scanning）
-代码覆盖率阈值（如 <80% 则失败）
-自定义规则示例
+Issue 类型划分（Bug、Feature、Task）
+模板介绍
+如何关联 MR（Fixes #123 语法）
+状态流转建议（待处理 → 开发中 → 待测试 → 关闭）
 ```
-## 五、紧急情况处理篇
-目标：提供权限管控的例外流程<br>
+[详见CodeMergingProcess.md](./docs/IssueManagementSpecification.md)<br>
+## 五、里程碑使用说明
+目标：用于版本、Sprint 管理<br>
 内容：
 ```
-临时解除分支保护（管理员操作指南）
-Hotfix 流程
-如何创建紧急修复分支（hotfix/ 前缀）
-事后补 MR 和审计记录
+命名建议（如 Sprint-2024-W22、v1.0-release）
+关联 Issue 和 MR 的方式
+用作进度追踪和规划
 ```
-## 六、最佳实践与常见问题
-目标：减少团队误操作<br>
+```
+*待完善*
+## 六、标签体系规范
+目标：便于分类过滤任务<br>
 内容：
 ```
-错误案例
-误推送主分支后的回滚方法
-MR 冲突解决指南
-权限矩阵模板（Excel/表格）
-如何监控不合规操作（Audit Events）
+标签分类建议：
+    类型：bug, feature, refactor
+    状态：in-review, blocked, ready-for-test
+    优先级：P0, P1, P2
+命名风格保持统一
+在创建 Issue/MR 时的使用指引    
 ```
+```
+*待完善*
+## 七、CI/CD 简介
+
+```
+什么是 .gitlab-ci.yml
+常见 CI 阶段：
+    build
+    test
+    lint
+    deploy（如部署到测试环境）
+使用 Runner 的基本介绍（注册、配置）
+示例 CI 文件模板
+```
+```
+*待完善*
+## 八、代码评审质量保障规范
+```
+是否必须 Review？
+谁能审核哪些人代码（按角色或模块）
+审核 Checklist（如是否有测试、是否符合命名规范）
+```
+```
+*待完善*
