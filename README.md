@@ -48,7 +48,7 @@ Issue 类型划分（Bug、Feature、Task）
 如何关联 MR（Fixes #123 语法）
 状态流转建议（待处理 → 开发中 → 待测试 → 关闭）
 ```
-[详见CodeMergingProcess.md](./docs/IssueManagementSpecification.md)<br>
+[详见IssueManagementSpecification.md](./docs/IssueManagementSpecification.md)<br>
 ## 五、里程碑使用说明
 目标：用于版本、Sprint 管理<br>
 内容：
@@ -57,8 +57,9 @@ Issue 类型划分（Bug、Feature、Task）
 关联 Issue 和 MR 的方式
 用作进度追踪和规划
 ```
-```
-*待完善*
+
+[详见InstructionsForUsingMilestones.md](./docs/InstructionsForUsingMilestones.md)<br>
+
 ## 六、标签体系规范
 目标：便于分类过滤任务<br>
 内容：
@@ -70,7 +71,7 @@ Issue 类型划分（Bug、Feature、Task）
 命名风格保持统一
 在创建 Issue/MR 时的使用指引    
 ```
-```
+
 *待完善*
 ## 七、CI/CD 简介
 
@@ -84,13 +85,14 @@ Issue 类型划分（Bug、Feature、Task）
 使用 Runner 的基本介绍（注册、配置）
 示例 CI 文件模板
 ```
-```
+
 *待完善*
+
 ## 八、代码评审质量保障规范
 ```
 是否必须 Review？
 谁能审核哪些人代码（按角色或模块）
 审核 Checklist（如是否有测试、是否符合命名规范）
 ```
-```
+
 *待完善*
