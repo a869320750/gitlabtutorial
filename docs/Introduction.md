@@ -65,7 +65,7 @@ Epics（企业版）：管理大型需求<br>
 AI 代码建议（类似 GitHub Copilot）<br>
 AI 测试生成<br>
 AI 安全扫描<br>
-
+ 
 ## 3. GitLab 的版本区别
 
 | 功能 | 社区版（CE）| 企业版（EE）|
