@@ -43,6 +43,7 @@ graph LR
 目标：通过议题管理项目规范、类比华为的SR需求单和DTS问题单<br>
 内容：
 ```
+
 Issue 类型划分（Bug、Feature、Task）
 模板介绍
 如何关联 MR（Fixes #123 语法）
