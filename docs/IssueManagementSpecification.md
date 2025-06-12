@@ -71,21 +71,24 @@ Resolves #789<br>
 *`这里只展示此功能，具体方案需后续统一讨论一起定夺`*
 ### 示例1：[SR] 用户资料页改版
 ```
-需求标题：当前资料页功能简陋，用户反馈较多<br>
-需求目标：重构前端交互，统一API<br>
-功能文档：外部链接<br>
+需求标题：
+需求背景
+需求目标
+功能设计文档
 实现要点
 验收标准
-计划完成时间
+计划上线版本
 ```
 ![举例子](../images/IssueManagementSpecification/TestRequest.png)
-### 示例2：[DTS] 用户登录失败返回500
+### 示例2：[DTS] 问题单修改
 ```
-问题描述：尝试登录时报错，控制台返回500
-日志信息：Cannot read property 'token' of undefined
-根因：后端未处理 null 场景
-修复方案：增加参数校验
-标签：bug, P0, backend, status:in-dev
-关联 MR：!123
+问题标题
+问题描述
+问题日志
+根因分析
+修改方案
+验收用例
+补救措施
 ```
+
 ![举例子](../images/IssueManagementSpecification/TestDefect.png)
