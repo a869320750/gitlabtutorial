@@ -1,4 +1,30 @@
 # 代码合入流程规范
+## 零、Git SSH 配置步骤
+
+1. 生成 SSH 密钥对（如果还没有）
+
+在服务器或本地终端执行：
+```sh
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+2. 查看并复制公钥内容
+```sh
+cat ~/.ssh/id_rsa.pub
+```
+复制输出的全部内容。
+
+3. 添加公钥到 GitLab
+    1. 登录你的 GitLab 网页端。
+    2. 右上角点击头像 → Preferences（偏好设置）→ SSH Keys。
+    3. 粘贴刚才复制的公钥内容到“Key”文本框，设置名称和有效期，点击“Add key”。
+4. 测试 SSH 连接
+```sh
+ssh -T git@your.gitlab.server
+```
+5. 用 SSH 地址 clone 仓库
+```sh
+git clone git@your.gitlab.server:yourgroup/yourrepo.git
+```
 ## 一、总体流程
 ```mermaid
 graph LR

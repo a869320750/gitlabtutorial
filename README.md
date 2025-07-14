@@ -1,5 +1,7 @@
 # 简介
 此项目是为了提供开发人员快速理解和使用gitlab而准备分为以下几个部分。
+## 零、git工具基础介绍
+[详见GitBasicIntroduction.md](./docs/GitBasicIntroduction.md)
 
 ## 一、gitlab简介
 [详见Introduction.md](./docs/Introduction.md)
