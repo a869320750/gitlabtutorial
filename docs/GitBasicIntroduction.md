@@ -25,29 +25,44 @@
     - 举例：论文修改时，可以随时回到三天前的版本
     - 演示：git log 显示历史记录（像翻阅日记）
 ```mermaid
-flowchart TB
-    subgraph 传统方式
-        A[报告_v1.docx] --> B[报告_v2_修改.docx]
-        B --> C[报告_v3_最终版.docx]
-        C --> D[报告_v3_最终版_新数据.docx]
-        style A stroke:#f00,stroke-width:2px
-        style D stroke:#f00,stroke-width:2px
-    end
+timeline
+    title 论文修改历史
     
-    subgraph Git方式
-        G[报告.docx] -- commit 1 --> H[(版本a1b2)]
-        H -- commit 2 --> I[(版本c3d4)]
-        I -- commit 3 --> J[(版本e5f6)]
-        style G stroke:#0a0,stroke-width:2px
-        style J stroke:#0a0,stroke-width:2px
-    end
+    周一 : 初稿完成
+         : 5000字
     
-    note[红色箭头表示版本丢失风险, 绿色箭头表示完整版本链]
-
+    周二 : 添加图表
+         : 6000字
+         : 插入3个图表
+    
+    周三 : 修改结论
+         : 6200字
+         : 重写最后一章
+    
+    周四 : 发现问题！
+         : 想回到周二版本
+         : git checkout 周二版本
 ```
+
 - 平行宇宙（分支管理）
     - 举例：写年度报告时，同时尝试两种排版方案
     - 画图：主分支 vs 实验分支（用树干和树枝比喻）
+
+```mermaid
+flowchart TD
+    A[写年度报告] --> B{尝试不同方案}
+    B --> C[方案A：传统格式]
+    B --> D[方案B：创新排版]
+    C --> E[继续完善A]
+    D --> F[继续完善B]
+    E --> G{哪个更好？}
+    F --> G
+    G --> H[选择最佳方案合并]
+    
+    style C fill:#ffcccc
+    style D fill:#ccffcc
+    style H fill:#ccccff
+```
 
 ```mermaid
 gitGraph
@@ -66,19 +81,104 @@ gitGraph
 - 安全网（变更追踪）
     - 举例：Excel公式修改出错时，能快速定位问题修改点
     - 演示：git diff 显示文件差异（类似Word修订模式）
+```mermaid
+flowchart LR
+    A[原始Excel] --> B[修改公式]
+    B --> C{出错了！}
+    C --> D[git diff 查看差异]
+    D --> E[发现：把SUM改成了AVERAGE]
+    E --> F[快速定位问题位置]
+    F --> G[恢复正确公式]
+    
+    style C fill:#ffcccc
+    style E fill:#ffffcc
+    style G fill:#ccffcc
+```
 
-## 2. Git实用场景
+## 2. 常用Git命令简介
+记住这几个命令就够日常使用了，其他复杂操作可以查文档
+```mermaid
+flowchart LR
+    F[文件修改] -->|git add| S{暂存区}
+    S -->|git commit| R[(版本仓库)]
+    R -->|git push| C[(GitLab云端)]
+    C -->|git pull| F
+    
+    subgraph 本地
+        F <--> S
+        S <--> R
+    end
+    
+    style F fill:#f9f,stroke:#333
+    style S fill:#9f9,stroke:#333
+    style R fill:#99f,stroke:#333
+```
+
+| 类别 | 命令 | 作用 | 示例 |
+| ---- | ---- | ---- | ---- |
+| **基础操作** | git clone | 克隆远程仓库到本地 | git clone https://xxx.git |
+| | git status | 查看当前状态 | git status |
+| | git add | 添加文件到暂存区 | git add 文件名 |
+| | git commit | 提交更改到本地仓库 | git commit -m "说明" |
+| **同步操作** | git pull | 拉取远程最新代码 | git pull |
+| | git push | 推送本地代码到远程 | git push |
+| **分支操作** | git branch | 查看/创建分支 | git branch, git branch 新分支名 |
+| | git checkout | 切换分支 | git checkout 分支名 |
+| | git merge | 合并分支 | git merge 分支名 |
+| **查看历史** | git log | 查看提交历史 | git log --oneline |
+| | git diff | 查看文件差异 | git diff |
+
+更多详细用法请参考[廖雪峰Git教程](https://www.liaoxuefeng.com/wiki/896043488029600)。
+
+
+
+## 3. Git实用场景
 - 场景1：重要文件管理
-    - 初始化：git init（把这个文件夹交给Git管理）
-    - 快照：git add . + git commit -m "版本说明"（像手机拍照存档）
+- 现场演示任务：
+
+    1. 创建一个Excel文件（销售数据.xlsx）
+    2. 执行 git init 初始化仓库
+    3. 添加初始数据并提交：git add . + git commit -m "初始销售数据"
+    4. 修改数据，再次提交：git commit -m "更新Q2数据"
+    5. 故意删除重要数据
+    6. 使用 git log 查看历史
+    7. 用 git checkout 恢复到之前版本
+```mermaid
+flowchart TD
+    subgraph 传统方式
+        A1[报告_v1.docx]
+        A2[报告_v2_小王修改.docx]
+        A3[报告_v2_小李修改.docx]
+        A4[报告_v3_最终版.docx]
+        A5[报告_v3_最终版_新数据.docx]
+        A1 --> A2
+        A1 --> A3
+        A2 --> A4
+        A3 --> A4
+        A4 --> A5
+        style A1 stroke:#f00,stroke-width:2px
+        style A5 stroke:#f00,stroke-width:2px
+    end
+
+    subgraph Git方式
+        G[报告.docx]
+        G -- commit 1 --> H[(版本a1b2)]
+        H -- commit 2 --> I[(版本c3d4)]
+        I -- commit 3 --> J[(版本e5f6)]
+        J -- commit 4 --> K[(版本g7h8)]
+        style G stroke:#0a0,stroke-width:2px
+        style K stroke:#0a0,stroke-width:2px
+    end
+
+    note[左侧：只有一个文件，所有历史版本都可回溯。右侧：文件名混乱、分叉，容易丢失。]
+```
+
 - 场景2：团队协作
     - 上传：git push（把本地修改同步到GitLab）
     - 下载：git pull（获取他人最新版本）
 - 场景3：应急恢复
     - git reset --hard 版本号（回到某个历史节点）
 
-- 互动环节：
-- 
 用修改Excel文件为例，现场演示：
 
   - 创建包含销售数据的Excel
@@ -104,40 +204,6 @@ sequenceDiagram
     User->>Git: git push
     Git->>GitLab: 同步安全备份
 ```
-
-## 3. 常用Git命令简介
-
-```mermaid
-flowchart LR
-    F[文件修改] -->|git add| S{暂存区}
-    S -->|git commit| R[(版本仓库)]
-    R -->|git push| C[(GitLab云端)]
-    C -->|git pull| F
-    
-    subgraph 本地
-        F <--> S
-        S <--> R
-    end
-    
-    style F fill:#f9f,stroke:#333
-    style S fill:#9f9,stroke:#333
-    style R fill:#99f,stroke:#333
-```
-
-| 命令 | 作用 | 示例 |
-| ---- | ---- | ---- |
-| git clone | 克隆远程仓库到本地 | git clone https://xxx.git |
-| git status | 查看当前状态 | git status |
-| git add | 添加文件到暂存区 | git add 文件名 |
-| git commit | 提交更改到本地仓库 | git commit -m "说明" |
-| git pull | 拉取远程最新代码 | git pull |
-| git push | 推送本地代码到远程 | git push |
-| git branch | 查看/创建分支 | git branch, git branch 新分支名 |
-| git checkout | 切换分支 | git checkout 分支名 |
-| git merge | 合并分支 | git merge 分支名 |
-
-更多详细用法请参考[廖雪峰Git教程](https://www.liaoxuefeng.com/wiki/896043488029600)。
-
 
 
 ## 4、Git实现原理
