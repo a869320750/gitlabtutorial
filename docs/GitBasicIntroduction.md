@@ -1,4 +1,4 @@
-## 开场故事
+## 小剧场
 ```
 有一个男孩，曾深深爱过一个人，却在关键时刻没能鼓起勇气说出口。
 
@@ -133,9 +133,8 @@ flowchart LR
 
 
 ## 3. Git实用场景
-- 场景1：重要文件管理
+- **场景1：重要文件管理**
 - 现场演示任务：
-
     1. 创建一个Excel文件（销售数据.xlsx）
     2. 执行 git init 初始化仓库
     3. 添加初始数据并提交：git add . + git commit -m "初始销售数据"
@@ -144,159 +143,201 @@ flowchart LR
     6. 使用 git log 查看历史
     7. 用 git checkout 恢复到之前版本
 ```mermaid
-flowchart TD
-    subgraph 传统方式
-        A1[报告_v1.docx]
-        A2[报告_v2_小王修改.docx]
-        A3[报告_v2_小李修改.docx]
-        A4[报告_v3_最终版.docx]
-        A5[报告_v3_最终版_新数据.docx]
-        A1 --> A2
-        A1 --> A3
-        A2 --> A4
-        A3 --> A4
-        A4 --> A5
-        style A1 stroke:#f00,stroke-width:2px
-        style A5 stroke:#f00,stroke-width:2px
-    end
-
-    subgraph Git方式
-        G[报告.docx]
-        G -- commit 1 --> H[(版本a1b2)]
-        H -- commit 2 --> I[(版本c3d4)]
-        I -- commit 3 --> J[(版本e5f6)]
-        J -- commit 4 --> K[(版本g7h8)]
-        style G stroke:#0a0,stroke-width:2px
-        style K stroke:#0a0,stroke-width:2px
-    end
-
-    note[左侧：只有一个文件，所有历史版本都可回溯。右侧：文件名混乱、分叉，容易丢失。]
+flowchart LR
+    A[文件修改] --> B[git add]
+    B --> C[git commit]
+    C --> D[版本快照]
+    D --> E[可随时回溯]
 ```
 
-- 场景2：团队协作
-    - 上传：git push（把本地修改同步到GitLab）
-    - 下载：git pull（获取他人最新版本）
-- 场景3：应急恢复
-    - git reset --hard 版本号（回到某个历史节点）
+- **场景2：团队协作**
+- 现场演示任务：
 
-用修改Excel文件为例，现场演示：
+  1. git clone 克隆项目
+  2. 修改文件内容
+  3. git push 上传更改
+  4. 模拟其他人修改
+  5. git pull 获取最新版本
 
-  - 创建包含销售数据的Excel
+流程图：
+```mermaid
+flowchart TD
+    A[远程仓库] -->|git clone| B[本地仓库A]
+    A -->|git clone| C[本地仓库B]
+    B -->|修改文件| D[本地修改A]
+    C -->|修改文件| E[本地修改B]
+    D -->|git push| F[远程仓库更新]
+    F -->|git pull| G[同步到本地B]
+    
+    style A fill:#99f,stroke:#333
+    style F fill:#99f,stroke:#333
+    style B fill:#9f9,stroke:#333
+    style C fill:#9f9,stroke:#333
+```
 
-  - 做几次修改并commit
+- **场景3：应急恢复**
 
-  - 故意删错数据后恢复
+- 现场演示任务：
+
+  1. git branch experiment 创建实验分支
+  2. 在实验分支修改文件
+  3. git checkout main 切换回主分支
+  4. 对比两个版本差异
+  5. git merge 合并成功的实验
 
 ```mermaid
-sequenceDiagram
-    participant User
-    participant Git
-    participant Excel
+flowchart LR
+    A[主分支main] -->|git branch| B[实验分支experiment]
+    B -->|修改文件| C[实验版本]
+    A -->|继续工作| D[主分支新版本]
+    C -->|实验成功| E{是否合并?}
+    E -->|YES| F[git merge]
+    E -->|NO| G[git branch -d]
+    F --> H[合并后的主分支]
     
-    User->>Excel: 修改销售数据.xlsx
-    User->>Git: git add .
-    Git->>Git: 创建数据快照
-    User->>Git: git commit -m "更新Q3数据"
-    Git->>Git: 生成版本号a1b2
-    loop 版本保护
-        Git->>Git: 压缩存储差异部分
-    end
-    User->>Git: git push
-    Git->>GitLab: 同步安全备份
+    style A fill:#99f,stroke:#333
+    style B fill:#f99,stroke:#333
+    style H fill:#9f9,stroke:#333
 ```
-
-
 ## 4、Git实现原理
+刚才我们看到了Git的神奇功能，那它是怎么做到的呢？
 
-核心机制三要素：
-
+核心机制揭秘
 1. 内容寻址存储（像图书馆索书号）
 
-    - 每个文件内容生成唯一SHA-1哈希值（如a1b2c3...）
+- 每个文件内容都有唯一的"身份证"（SHA-1哈希值）
+- 文件内容相同 = 身份证相同 = 只存一份
+- 演示：刚才我们修改CSV文件，Git就生成了新的哈希值
 
-    - 演示：修改文件后哈希值变化
-
+```mermaid
+flowchart TD
+    subgraph 图书馆管理系统
+        A[销售数据v1.csv] --> B[哈希值: a1b2c3]
+        C[销售数据v2.csv] --> D[哈希值: d4e5f6]
+        E[销售数据v3.csv] --> B
+        F[其他文件.txt] --> G[哈希值: x7y8z9]
+    end
+    
+    subgraph 存储区
+        H[文件内容a1b2c3]
+        I[文件内容d4e5f6]
+        J[文件内容x7y8z9]
+    end
+    
+    B --> H
+    D --> I
+    G --> J
+    
+    style E fill:#ffcc99
+    style A fill:#ffcc99
+    note1[v1和v3内容相同，共享同一个存储]
+```
 2. 快照式存储（拍立得相片）
 
-    - 每次commit保存整个项目的瞬间状态
-
-    - 但实际存储时复用未修改文件（节省空间）
-
+- 每次commit = 给整个项目拍一张"全家福"
+- 但聪明之处：未修改的文件直接"引用"之前的照片
+- 这就是为什么Git能快速回到任意版本
+```mermaid
+timeline
+    title 项目快照历史（拍立得相片集）
+    
+    第1张照片 : 项目初始状态
+              : 文件A
+              : commit: abc123
+    
+    第2张照片 : 修改了文件A
+              : 文件A(新)
+              : commit: def456
+    
+    第3张照片 : 添加了文件B
+              : 文件A(引用)、文件B(新)
+              : commit: ghi789
+              
+    第4张照片 : 删除了文件B
+              : 文件A(引用)
+              : commit: jkl012
+```
 3. 指针网络（时光机导航图）
 
-    - HEAD指针：你现在在哪里
+- HEAD指针：告诉你"现在在哪里"
+- 分支指针：不同的"实验路线"
+- 标签指针：重要的"里程碑"
 
-    - 分支指针：不同实验路线
-
-    - 标签指针：重要里程碑
-
-- 关键技术比喻：
-
-    - blob对象：文件内容的压缩包（像zip）
-
-    - tree对象：目录结构的描述文件（像图书目录）
-
-    - commit对象：带有时间戳的版本快照（像照片元数据）
-
-```txt
-[工作目录] --(git add)--> [暂存区] --(git commit)--> [版本库]
-                    ▲                    |
-                    └─────(检出操作)──────┘
+```mermaid
+flowchart TD
+    subgraph 时光机控制台
+        HEAD[HEAD指针<br/>你现在的位置]
+        MAIN[main分支指针<br/>主时间线]
+        FEATURE[feature分支指针<br/>实验时间线]
+        TAG[v1.0标签<br/>重要里程碑]
+    end
+    
+    subgraph 时间轴快照
+        C1[快照1<br/>初始版本]
+        C2[快照2<br/>添加功能]
+        C3[快照3<br/>修复bug]
+        C4[快照4<br/>实验功能]
+        C5[快照5<br/>发布版本]
+    end
+    
+    HEAD --> C3
+    MAIN --> C3
+    FEATURE --> C4
+    TAG --> C5
+    
+    C1 --> C2
+    C2 --> C3
+    C2 --> C4
+    C3 --> C5
+    
+    style HEAD fill:#ff9999
+    style MAIN fill:#99ff99
+    style FEATURE fill:#9999ff
+    style TAG fill:#ffff99
+```
+## Git存储本质：索引 + 哈希表
+```mermaid
+flowchart LR
+    A[工作目录] -->|git add| B[暂存区]
+    B -->|git commit| C[版本库]
+    C -->|git checkout| A
+    
+    subgraph 版本库内部
+        D[blob对象<br/>文件内容]
+        E[tree对象<br/>目录结构]
+        F[commit对象<br/>版本快照]
+    end
+    
+    C --> D
+    C --> E
+    C --> F
 ```
 
 
-## 5、 推荐学习资料
-- 廖雪峰Git教程
-- Git官方文档
-- 团队内部经验分享
+```mermaid
+flowchart TD
+    subgraph "Git对象数据库（哈希表）"
+        H1[哈希: a1b2c3<br/>→ 文件内容1]
+        H2[哈希: d4e5f6<br/>→ 文件内容2]
+        H3[哈希: g7h8i9<br/>→ 目录结构]
+        H4[哈希: j0k1l2<br/>→ 提交信息]
+    end
+    
+    subgraph "提交快照（索引）"
+        C1[提交1<br/>sales.csv → a1b2c3<br/>readme.txt → d4e5f6]
+        C2[提交2<br/>sales.csv → x9y8z7<br/>readme.txt → d4e5f6]
+    end
+    
+    C1 --> H1
+    C1 --> H2
+    C2 --> H2
+    
+    style H2 fill:#ffcc99
+    note[readme.txt没变，两个提交共享同一个哈希对象]
+```
+简单理解：
 
-## 6、时光恋人：一段时空中的 Git 爱情故事
-
-第一幕：觉醒能力，查看过去
-“男孩发现自己拥有通过照片回到过去的能力——就像 Git 的 git log 和 git checkout。”
-
-📸 git init：男孩开始写日记，记录下他对爱情的探索。
-
-🔍 git log：每一张照片，每一个瞬间，都是他走过的时间节点。
-
-🎞️ git checkout <commit>：他可以回到任何一个旧时刻去看看自己哪里做错了。
-
-第二幕：改写命运，创建分支
-“男孩穿越到了表白失败的那个晚上，这次他鼓起勇气说出了心里话。”
-
-🌿 git branch：创建一个新的可能性宇宙。
-
-🛤️ git checkout -b confession-night：他开始在另一个时间线上尝试新的方式。
-
-✅ git merge：他成功了，将这个成功的平行宇宙合并到了主时间线。
-
-第三幕：不断试错，寻找完美表白
-“为了求婚，他不断地在平行宇宙中实验不同的方式。”
-
-🔁 git rebase：他用更优雅的方式合并自己的改变。
-
-🧪 git cherry-pick：挑选某些成功的说法，从其他宇宙复制回来。
-
-第四幕：爱情结晶，产品发布
-“他们有了孩子，就像一个产品的最终发布。”
-
-📦 git tag v1.0：这是人生的第一个版本发布，孩子的出生。
-
-📤 git push origin master：把自己的幸福成果共享给世界。
-
-第五幕：婚姻危机，不能穿越的限制
-“孩子已出生，他不能穿越到孩子出生前，那些历史被锁定了。”
-
-🔒 历史提交不可更改：Git 记录的历史是安全的。
-
-🩹 git revert：他用行动忏悔过去的错误，像打补丁一样修复自己的行为。
-
-第六幕：人生终章，欣慰回顾
-“临终时，他翻看着自己的人生提交记录，那些 commit message，既有失误，也有修复。”
-
-🧾 git log --oneline：一行行记录，他为爱情做出的努力。
-
-🕯️ git blame：不是指责，而是责任，是自己为每一段历史负责。
-
-🏁 生命周期终结：一个仓库最终归档，就像软件生命周期走向终点。
-
+- Git就像一个超级智能的"文件管理员"
+- 它记住每个文件的每个版本，但不重复存储
+- 通过"指针"快速找到任意时刻的完整项目状态
+- 这就是为什么Git既节省空间，又能瞬间切换版本！
